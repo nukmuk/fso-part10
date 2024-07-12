@@ -3,6 +3,7 @@ import Text from "./Text";
 import theme from "../theme";
 
 const RepositoryItem = ({ item }) => {
+  // eslint-disable-next-line no-undef
   const formatter = Intl.NumberFormat("en", {
     notation: "compact",
     maximumFractionDigits: 1,

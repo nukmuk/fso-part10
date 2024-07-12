@@ -1,30 +1,39 @@
-import { View, StyleSheet, Pressable } from "react-native";
-import Constants from "expo-constants";
+import { StyleSheet, ScrollView, View } from "react-native";
 import Text from "./Text";
 import theme from "../theme";
+import { Link } from "react-router-native";
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
     backgroundColor: theme.colors.darkColor,
+    flexDirection: "row",
     // ...
   },
   // ...
 });
 
+const textStyle = {
+  fontSize: "subheading",
+  fontWeight: "bold",
+  style: { color: "white" },
+};
+
 const AppBar = () => {
   return (
     <View style={styles.container}>
-      <Pressable style={{ padding: 20 }}>
-        <Text
-          fontSize={"subheading"}
-          fontWeight="bold"
-          style={{ color: "white" }}
-        >
-          Repositories
-        </Text>
-      </Pressable>
+      <ScrollView horizontal>
+        <AppBarButton link={"/"} name={"Repositories"} />
+        <AppBarButton link={"/signin"} name={"Sign In"} />
+      </ScrollView>
     </View>
+  );
+};
+
+const AppBarButton = ({ link, name }) => {
+  return (
+    <Link to={link} style={{ padding: 20 }}>
+      <Text {...textStyle}>{name}</Text>
+    </Link>
   );
 };
 
