@@ -15,7 +15,7 @@ const RepositoryItem = ({ item }) => {
         <View style={{ flexDirection: "row", gap: 16 }}>
           <Image
             source={{ uri: item.ownerAvatarUrl }}
-            style={{ width: 80, height: 80, borderRadius: 4 }}
+            style={{ width: 80, height: 80, borderRadius: theme.edges.round }}
           />
 
           <View style={{ justifyContent: "center", gap: 4 }}>
@@ -27,7 +27,7 @@ const RepositoryItem = ({ item }) => {
               style={{
                 backgroundColor: theme.colors.primary,
                 color: "white",
-                borderRadius: 4,
+                borderRadius: theme.edges.round,
                 paddingHorizontal: 8,
                 paddingVertical: 4,
                 alignSelf: "flex-start",
