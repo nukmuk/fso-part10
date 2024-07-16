@@ -51,43 +51,31 @@ describe("RepositoryList", () => {
 
       const repositoryItems = screen.getAllByTestId("repositoryItem");
 
-      const [first, second] = repositoryItems;
-
       // eslint-disable-next-line no-undef
       const formatter = Intl.NumberFormat("en", {
         notation: "compact",
         maximumFractionDigits: 1,
       });
 
-      expect(first).toHaveTextContent(repositories.edges[0].node.fullName);
-      expect(first).toHaveTextContent(repositories.edges[0].node.description);
-      expect(first).toHaveTextContent(repositories.edges[0].node.language);
-      expect(first).toHaveTextContent(
-        formatter.format(repositories.edges[0].node.forksCount)
-      );
-      expect(first).toHaveTextContent(
-        formatter.format(repositories.edges[0].node.stargazersCount)
-      );
-      expect(first).toHaveTextContent(repositories.edges[0].node.ratingAverage);
-      expect(first).toHaveTextContent(
-        formatter.format(repositories.edges[0].node.reviewCount)
-      );
-
-      expect(second).toHaveTextContent(repositories.edges[1].node.fullName);
-      expect(second).toHaveTextContent(repositories.edges[1].node.description);
-      expect(second).toHaveTextContent(repositories.edges[1].node.language);
-      expect(second).toHaveTextContent(
-        formatter.format(repositories.edges[1].node.forksCount)
-      );
-      expect(second).toHaveTextContent(
-        formatter.format(repositories.edges[1].node.stargazersCount)
-      );
-      expect(second).toHaveTextContent(
-        repositories.edges[1].node.ratingAverage
-      );
-      expect(second).toHaveTextContent(
-        formatter.format(repositories.edges[1].node.reviewCount)
-      );
+      repositoryItems.forEach((item, idx) => {
+        expect(item).toHaveTextContent(repositories.edges[idx].node.fullName);
+        expect(item).toHaveTextContent(
+          repositories.edges[idx].node.description
+        );
+        expect(item).toHaveTextContent(repositories.edges[idx].node.language);
+        expect(item).toHaveTextContent(
+          formatter.format(repositories.edges[idx].node.forksCount)
+        );
+        expect(item).toHaveTextContent(
+          formatter.format(repositories.edges[idx].node.stargazersCount)
+        );
+        expect(item).toHaveTextContent(
+          repositories.edges[idx].node.ratingAverage
+        );
+        expect(item).toHaveTextContent(
+          formatter.format(repositories.edges[idx].node.reviewCount)
+        );
+      });
 
       // Add your test code here
     });
