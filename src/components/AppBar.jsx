@@ -26,7 +26,8 @@ const textStyle = {
 
 const AppBar = () => {
   const userQuery = useQuery(GET_USER);
-  const loggedIn = !!userQuery.data.me;
+  const loggedIn =
+    userQuery.data !== undefined ? Boolean(userQuery.data.me) : false;
   const authStorage = useAuthStorage();
   const apolloClient = useApolloClient();
 

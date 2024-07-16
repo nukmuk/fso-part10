@@ -11,7 +11,10 @@ const RepositoryItem = ({ item }) => {
 
   return (
     <>
-      <View style={{ padding: 16, gap: 16, backgroundColor: "white" }}>
+      <View
+        style={{ padding: 16, gap: 16, backgroundColor: "white" }}
+        testID="repositoryItem"
+      >
         <View style={{ flexDirection: "row", gap: 16 }}>
           <Image
             source={{ uri: item.ownerAvatarUrl }}
