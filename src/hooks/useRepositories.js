@@ -1,4 +1,4 @@
-import { useApolloClient, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { GET_REPOSITORIES } from "../graphql/queries";
 
@@ -11,11 +11,9 @@ const useRepositories = () => {
   });
 
   useEffect(() => {
-    console.log("data:", response.data);
-    console.log("error:", response.error);
-    console.log("loading:", response.loading);
     if (response.error) return console.error("error", response.error);
     if (response.loading) return;
+    console.log("data:", response.data);
     setRepositories(response.data);
     setLoading(false);
   }, [response.data, response.error, response.loading]);
