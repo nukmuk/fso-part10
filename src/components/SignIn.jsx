@@ -36,10 +36,7 @@ const validationSchema = yup.object().shape({
   password: yup.string().required("Password is required"),
 });
 
-const SignIn = () => {
-  const [signIn] = useSignIn();
-  const navigate = useNavigate();
-
+export const SignInContainer = ({ signIn, navigate }) => {
   const initialValues = {
     username: "",
     password: "",
@@ -47,14 +44,12 @@ const SignIn = () => {
 
   const onSubmit = async (values) => {
     const { username, password } = values;
-    console.log("val", username, password);
 
     try {
-      const data = await signIn({ username, password });
-      console.log("success:", data.authenticate);
+      await signIn({ username, password });
       navigate("/");
     } catch (e) {
-      console.log("e", e);
+      console.log("sign in error", e);
     }
   };
 
@@ -97,6 +92,12 @@ const SignIn = () => {
       </Pressable>
     </View>
   );
+};
+
+const SignIn = () => {
+  const [signIn] = useSignIn();
+  const navigate = useNavigate();
+  return <SignInContainer signIn={(signIn, navigate)} />;
 };
 
 export default SignIn;
