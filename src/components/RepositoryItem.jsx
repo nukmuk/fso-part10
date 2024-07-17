@@ -1,31 +1,53 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Linking, Pressable, StyleSheet, View } from "react-native";
 import Text from "./Text";
 import theme from "../theme";
+import { useNavigate } from "react-router-native";
 
-const RepositoryItem = ({ item }) => {
+const styles = StyleSheet.create({
+  button: {
+    paddingVertical: 16,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.edges.round,
+    color: "white",
+    textAlign: "center",
+    fontWeight: theme.fontWeights.bold,
+  },
+});
+
+const RepositoryItem = ({ repository, expanded = false }) => {
+  const navigate = useNavigate();
   // eslint-disable-next-line no-undef
   const formatter = Intl.NumberFormat("en", {
     notation: "compact",
     maximumFractionDigits: 1,
   });
 
+  const handlePress = () => {
+    if (expanded) return;
+    navigate(`/repository/${repository.id}`);
+  };
+
+  const handleOpenLink = () => {
+    Linking.openURL(repository.url);
+  };
+
   return (
-    <>
+    <Pressable onPress={handlePress}>
       <View
         style={{ padding: 16, gap: 16, backgroundColor: "white" }}
         testID="repositoryItem"
       >
         <View style={{ flexDirection: "row", gap: 16 }}>
           <Image
-            source={{ uri: item.ownerAvatarUrl }}
+            source={{ uri: repository.ownerAvatarUrl }}
             style={{ width: 80, height: 80, borderRadius: theme.edges.round }}
           />
 
           <View style={{ justifyContent: "center", gap: 4 }}>
             <Text fontWeight="bold" fontSize="subheading">
-              {item.fullName}
+              {repository.fullName}
             </Text>
-            <Text>{item.description}</Text>
+            <Text>{repository.description}</Text>
             <Text
               style={{
                 backgroundColor: theme.colors.primary,
@@ -36,7 +58,7 @@ const RepositoryItem = ({ item }) => {
                 alignSelf: "flex-start",
               }}
             >
-              {item.language}
+              {repository.language}
             </Text>
           </View>
         </View>
@@ -50,27 +72,36 @@ const RepositoryItem = ({ item }) => {
         >
           <View style={statsStyle}>
             <Text fontWeight="bold">
-              {formatter.format(item.stargazersCount)}
+              {formatter.format(repository.stargazersCount)}
             </Text>
             <Text>Stars</Text>
           </View>
           <View style={statsStyle}>
-            <Text fontWeight="bold">{formatter.format(item.forksCount)}</Text>
+            <Text fontWeight="bold">
+              {formatter.format(repository.forksCount)}
+            </Text>
             <Text>Forks</Text>
           </View>
           <View style={statsStyle}>
-            <Text fontWeight="bold">{formatter.format(item.reviewCount)}</Text>
+            <Text fontWeight="bold">
+              {formatter.format(repository.reviewCount)}
+            </Text>
             <Text>Reviews</Text>
           </View>
           <View style={statsStyle}>
             <Text fontWeight="bold">
-              {formatter.format(item.ratingAverage)}
+              {formatter.format(repository.ratingAverage)}
             </Text>
             <Text>Rating</Text>
           </View>
         </View>
+        {expanded && (
+          <Pressable onPress={handleOpenLink}>
+            <Text style={styles.button}>Open in GitHub</Text>
+          </Pressable>
+        )}
       </View>
-    </>
+    </Pressable>
   );
 };
 
