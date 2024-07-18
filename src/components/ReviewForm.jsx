@@ -3,7 +3,6 @@ import Text from "./Text";
 import { useFormik } from "formik";
 import theme from "../theme";
 import * as yup from "yup";
-import useSignIn from "../hooks/useSignIn";
 import { useNavigate } from "react-router-native";
 import { useMutation } from "@apollo/client";
 import { CREATE_REVIEW } from "../graphql/mutations";
@@ -40,9 +39,7 @@ const validationSchema = yup.object().shape({
   review: yup.string(),
 });
 
-export const ReviewFormContainer = ({ navigate }) => {
-  const [createReview] = useMutation(CREATE_REVIEW);
-
+export const ReviewFormContainer = ({ navigate, createReview }) => {
   const initialValues = {
     ownerName: "",
     repositoryName: "",
@@ -51,15 +48,14 @@ export const ReviewFormContainer = ({ navigate }) => {
   };
 
   const onSubmit = async (values) => {
-    const { ownerName, repositoryName, rating, text } = values;
-    const review = { ...values, rating: Number(rating) };
+    const review = { ...values, rating: Number(values.rating) };
 
     try {
       const result = await createReview({ variables: { review } });
 
       navigate(`/repository/${result.data.createReview.repositoryId}`);
     } catch (e) {
-      console.log("sign in error", e);
+      console.log("create review error", e);
     }
   };
 
@@ -130,7 +126,10 @@ export const ReviewFormContainer = ({ navigate }) => {
 
 const ReviewForm = () => {
   const navigate = useNavigate();
-  return <ReviewFormContainer navigate={navigate} />;
+  const [createReview] = useMutation(CREATE_REVIEW);
+  return (
+    <ReviewFormContainer navigate={navigate} createReview={createReview} />
+  );
 };
 
 export default ReviewForm;

@@ -51,7 +51,10 @@ const AppBar = () => {
             </Pressable>
           </>
         ) : (
-          <AppBarButton link={"/signin"} name={"Sign In"} />
+          <>
+            <AppBarButton link={"/signin"} name={"Sign in"} />
+            <AppBarButton link={"/signup"} name={"Sign up"} />
+          </>
         )}
       </ScrollView>
     </View>
