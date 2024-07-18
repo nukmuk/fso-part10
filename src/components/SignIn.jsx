@@ -41,13 +41,13 @@ export const SignInContainer = ({ signIn, navigate }) => {
     username: "",
     password: "",
   };
+  console.log("nav", navigate);
 
   const onSubmit = async (values) => {
     const { username, password } = values;
 
     try {
       await signIn({ username, password });
-      navigate("/");
     } catch (e) {
       console.log("sign in error", e);
     }
@@ -97,7 +97,7 @@ export const SignInContainer = ({ signIn, navigate }) => {
 const SignIn = () => {
   const [signIn] = useSignIn();
   const navigate = useNavigate();
-  return <SignInContainer signIn={(signIn, navigate)} />;
+  return <SignInContainer signIn={signIn} navigate={navigate} />;
 };
 
 export default SignIn;

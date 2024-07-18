@@ -44,9 +44,12 @@ const AppBar = () => {
         <AppBarButton link={"/"} name={"Repositories"} />
 
         {loggedIn ? (
-          <Pressable style={styles.appBarButton} onPress={handleSignout}>
-            <Text {...textStyle}>Sign out</Text>
-          </Pressable>
+          <>
+            <AppBarButton link={"/createreview"} name={"Create a review"} />
+            <Pressable style={styles.appBarButton} onPress={handleSignout}>
+              <Text {...textStyle}>Sign out</Text>
+            </Pressable>
+          </>
         ) : (
           <AppBarButton link={"/signin"} name={"Sign In"} />
         )}
