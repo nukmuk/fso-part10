@@ -29,4 +29,14 @@ const theme = {
   },
 };
 
+theme.input = {
+  borderColor: "grey",
+  borderStyle: "solid",
+  borderWidth: 1,
+  borderRadius: theme.edges.round,
+  padding: 8,
+  marginTop: 12,
+  marginBottom: 4,
+};
+
 export default theme;

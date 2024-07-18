@@ -8,15 +8,6 @@ import { useNavigate } from "react-router-native";
 
 const styles = StyleSheet.create({
   container: { padding: 16, gap: 0 },
-  input: {
-    borderColor: "grey",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderRadius: theme.edges.round,
-    padding: 8,
-    marginTop: 12,
-    marginBottom: 4,
-  },
   button: {
     textAlign: "center",
     fontWeight: theme.fontWeights.bold,
@@ -66,7 +57,7 @@ export const SignInContainer = ({ signIn, navigate }) => {
         value={formik.values.username}
         onChangeText={formik.handleChange("username")}
         style={[
-          styles.input,
+          theme.input,
           formik.errors.username && { borderColor: theme.colors.error },
           { marginTop: 0 },
         ]}
@@ -79,7 +70,7 @@ export const SignInContainer = ({ signIn, navigate }) => {
         value={formik.values.password}
         onChangeText={formik.handleChange("password")}
         style={[
-          styles.input,
+          theme.input,
           formik.errors.password && { borderColor: theme.colors.error },
         ]}
         secureTextEntry
