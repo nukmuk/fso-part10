@@ -14,6 +14,19 @@ export const REPOSITORY_DATA = gql`
   }
 `;
 
+export const REVIEW_DATA = gql`
+  fragment ReviewData on Review {
+    id
+    text
+    rating
+    createdAt
+    user {
+      id
+      username
+    }
+  }
+`;
+
 export const GET_REPOSITORIES = gql`
   query GetRepositories(
     $orderBy: AllRepositoriesOrderBy
@@ -43,27 +56,32 @@ export const GET_REPOSITORY = gql`
       reviews {
         edges {
           node {
-            id
-            text
-            rating
-            createdAt
-            user {
-              id
-              username
-            }
+            ...ReviewData
           }
         }
       }
     }
   }
   ${REPOSITORY_DATA}
+  ${REVIEW_DATA}
 `;
 
 export const GET_USER = gql`
-  {
+  query getCurrentUser($includeReviews: Boolean = false) {
     me {
       id
       username
+      reviews @include(if: $includeReviews) {
+        edges {
+          node {
+            ...ReviewData
+            repository {
+              fullName
+            }
+          }
+        }
+      }
     }
   }
+  ${REVIEW_DATA}
 `;

@@ -40,7 +40,7 @@ const SingleRepositoryInfoHeader = ({ repository }) => {
   return <RepositoryItem repository={repository} expanded={true} />;
 };
 
-const ReviewItem = ({ review }) => {
+export const ReviewItem = ({ review, repositoryName = null }) => {
   return (
     <View style={styles.review.container}>
       <View style={styles.review.rating}>
@@ -49,7 +49,9 @@ const ReviewItem = ({ review }) => {
         </Text>
       </View>
       <View style={styles.review.rightContainer}>
-        <Text fontWeight="bold">{review.user.username}</Text>
+        <Text fontWeight="bold">
+          {repositoryName ? repositoryName : review.user.username}
+        </Text>
         <Text color="textSecondary">
           {format(review.createdAt, "dd.MM.yyyy")}
         </Text>
@@ -66,7 +68,10 @@ const SingleRepositoryInfo = () => {
     variables: { id },
   });
 
-  if (error) return <Text>Error: {error.message}</Text>;
+  if (error)
+    return (
+      <Text>Error: {JSON.stringify(error.networkError.result, null, 2)}</Text>
+    );
   if (loading) return <Text>Loading {id}...</Text>;
 
   const repository = data.repository;
