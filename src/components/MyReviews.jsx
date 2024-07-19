@@ -22,7 +22,7 @@ const MyReviews = () => {
       <FlatList
         data={reviews}
         renderItem={({ item }) => (
-          <ReviewItem review={item} repositoryName={item.repository.fullName} />
+          <ReviewItem review={item} showButtons={true} />
         )}
         keyExtractor={({ id }) => id}
       ></FlatList>

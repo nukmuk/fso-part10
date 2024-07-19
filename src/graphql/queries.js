@@ -77,6 +77,7 @@ export const GET_USER = gql`
             ...ReviewData
             repository {
               fullName
+              url
             }
           }
         }
