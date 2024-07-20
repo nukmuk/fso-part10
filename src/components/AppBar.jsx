@@ -2,7 +2,7 @@ import { StyleSheet, ScrollView, View, Pressable } from "react-native";
 import Text from "./Text";
 import theme from "../theme";
 import { Link } from "react-router-native";
-import { ApolloClient, useApolloClient, useQuery } from "@apollo/client";
+import { useApolloClient, useQuery } from "@apollo/client";
 import { GET_USER } from "../graphql/queries";
 import useAuthStorage from "../hooks/useAuthStorage";
 

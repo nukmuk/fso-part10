@@ -1,7 +1,6 @@
 import { FlatList, View, StyleSheet, TextInput } from "react-native";
 import RepositoryItem from "./RepositoryItem";
 import useRepositories from "../hooks/useRepositories";
-import Text from "./Text";
 import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
 import theme from "../theme";
@@ -21,6 +20,7 @@ export const RepositoryListContainer = ({
   sort,
   setSearch,
   search,
+  onEndReach,
 }) => {
   // Get the nodes from the edges array
   const repositoryNodes = repositories
@@ -33,6 +33,8 @@ export const RepositoryListContainer = ({
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
         renderItem={({ item }) => <RepositoryItem repository={item} />}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
         ListHeaderComponent={
           <>
             <TextInput
@@ -81,12 +83,15 @@ const RepositoryList = () => {
   const [sort, setSort] = useState(sorts.latest);
   const [search, setSearch] = useState("");
   const [searchDebounced] = useDebounce(search, 500);
-  const { repositories } = useRepositories({
+  const { repositories, fetchMore } = useRepositories({
     ...sort,
     searchKeyword: searchDebounced,
+    first: 8,
   });
-  // if (error) return <Text>Error: {error.message}</Text>;
-  // if (loading) return <Text>Loading</Text>;
+
+  const onEndReach = async () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
@@ -95,6 +100,7 @@ const RepositoryList = () => {
       sort={sort}
       search={search}
       setSearch={setSearch}
+      onEndReach={onEndReach}
     />
   );
 };

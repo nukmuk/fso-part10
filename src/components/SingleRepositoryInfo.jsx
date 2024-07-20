@@ -1,9 +1,9 @@
-import { useParams } from "react-router-native";
+import { useNavigate, useParams } from "react-router-native";
 import RepositoryItem from "./RepositoryItem";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_REPOSITORY, GET_USER } from "../graphql/queries";
 import Text from "./Text";
-import { Alert, FlatList, Linking, StyleSheet, View } from "react-native";
+import { Alert, FlatList, StyleSheet, View } from "react-native";
 import theme from "../theme";
 import { format } from "date-fns";
 import Button from "./Button";
@@ -53,6 +53,7 @@ const SingleRepositoryInfoHeader = ({ repository }) => {
 
 export const ReviewItem = ({ review, showButtons = false }) => {
   const [deleteReview] = useMutation(DELETE_REVIEW);
+  const navigate = useNavigate();
 
   const handleDelete = async () => {
     Alert.alert(
@@ -95,7 +96,7 @@ export const ReviewItem = ({ review, showButtons = false }) => {
       {showButtons && (
         <View style={styles.review.buttonContainer}>
           <Button
-            onPress={() => Linking.openURL(review.repository.url)}
+            onPress={() => navigate(`/repository/${review.repositoryId}`)}
             label="View repository"
           />
           <Button
@@ -111,10 +112,25 @@ export const ReviewItem = ({ review, showButtons = false }) => {
 
 const SingleRepositoryInfo = () => {
   const { id } = useParams();
-  const { data, loading, error } = useQuery(GET_REPOSITORY, {
+  const variables = { id, first: 8 };
+  const { data, loading, error, fetchMore } = useQuery(GET_REPOSITORY, {
     fetchPolicy: "cache-and-network",
-    variables: { id },
+    variables,
   });
+
+  const handleFetchMore = () => {
+    const canFetchMore =
+      !loading && data?.repository.reviews.pageInfo.hasNextPage;
+
+    if (!canFetchMore) return;
+
+    fetchMore({
+      variables: {
+        after: data.repository.reviews.pageInfo.endCursor,
+        ...variables,
+      },
+    });
+  };
 
   if (error)
     return (
@@ -131,6 +147,8 @@ const SingleRepositoryInfo = () => {
       data={reviews}
       renderItem={({ item }) => <ReviewItem review={item} />}
       keyExtractor={({ id }) => id}
+      onEndReached={handleFetchMore}
+      onEndReachedThreshold={0.5}
       ListHeaderComponent={() => (
         <SingleRepositoryInfoHeader repository={repository} />
       )}
